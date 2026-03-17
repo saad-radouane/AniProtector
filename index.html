@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aniprotector - AI-powered image detector to identify animals and their conservation status.">
+    <title>Aniprotector | AI Animal Detector</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header class="hero">
+            <h1 class="logo-title">Ani<span class="highlight">protector</span></h1>
+            <p class="subtitle">Upload an image to identify the species and learn about its conservation status.</p>
+        </header>
+
+        <section class="detector-panel glass-card">
+            <div id="drop-area" class="drop-area">
+                <input type="file" id="file-input" accept="image/*" hidden>
+                <div class="upload-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="upload-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p>Drag & drop an image here</p>
+                    <p class="sub-text">or click to browse</p>
+                </div>
+                <img id="image-preview" src="" alt="Preview" hidden>
+            </div>
+
+            <div id="loading-spinner" class="loading-spinner" hidden>
+                <div class="spinner"></div>
+                <p>Analyzing with AI...</p>
+            </div>
+
+            <div id="result-view" class="result-view" hidden>
+                <h2 class="result-title">Detection Results</h2>
+                
+                <div class="result-details">
+                    <div class="detail-item">
+                        <span class="label">Species:</span>
+                        <span id="species-name" class="value">Analyzing...</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="label">Confidence:</span>
+                        <div class="confidence-bar">
+                            <div id="confidence-fill" class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="confidence-text" class="value percent">0%</span>
+                    </div>
+
+                    <div class="status-card" id="status-card">
+                        <div class="status-header">
+                            <span class="status-label">Conservation Status</span>
+                            <span id="status-badge" class="badge">Unknown</span>
+                        </div>
+                        <p id="status-desc" class="status-desc">Upload an image to see the status.</p>
+                    </div>
+                </div>
+                
+                <button id="reset-btn" class="btn-primary">Scan Another Image</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- TensorFlow.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@latest"></script>
+    <!-- App Logic -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

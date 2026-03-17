@@ -1,0 +1,12 @@
+0 Turtle
+1 Crocodile
+2 Lizard
+3 Iguana
+4 Gecko
+5 Chameleon
+6 Skink
+7 Snake
+8 Mamba
+9 Anaconda
+10 Viper
+11 Boa
