@@ -1,0 +1,16 @@
+How to Run & Test
+Because we've introduced a custom Python AI Model in addition to the static frontend, testing requires two terminal windows.
+
+Step 1: Start the Python Backend (For Reptile Detection)
+Ensure your model files (keras_model.h5 and labels.txt) are placed directly inside the aniprotector folder.
+Open a terminal in the aniprotector folder.
+Install dependencies if you haven't: pip install flask flask-cors tensorflow pillow numpy
+Run the backend script: python app.py (The server will start on port 5000).
+Step 2: Start the Frontend App
+Open a second terminal inside the aniprotector folder.
+Start a simple web server: python -m http.server 8000
+Open your browser to http://localhost:8000/.
+Testing the System:
+
+If you upload a picture of a reptile, the Python server terminal should show it processing the image, and the frontend will instantly reflect the result.
+Even if you close the Python server, the web app will not break! It will catch the connection error and instantly switch to using the browser's built-in MobileNet model.

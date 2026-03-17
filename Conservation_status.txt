@@ -1,0 +1,270 @@
+# Animals and Their Conservation Status (IUCN Red List)
+
+====================================================
+EX – EXTINCT
+====================================================
+- Dodo
+- Tasmanian Tiger
+- Passenger Pigeon
+- Great Auk
+- Steller’s Sea Cow
+- Caribbean Monk Seal
+- Japanese Sea Lion
+- Atlas Bear
+- Bluebuck
+- Pyrenean Ibex
+- Falkland Islands Wolf
+- Broad-faced Potoroo
+- Toolache Wallaby
+- Labrador Duck
+- Mauritius Blue Pigeon
+- Elephant Bird
+- Moa
+- Giant Fossa
+
+====================================================
+EW – EXTINCT IN THE WILD
+====================================================
+- Scimitar Oryx
+- Hawaiian Crow (ʻAlalā)
+- Alagoas Curassow
+- Guam Kingfisher
+- Socorro Dove
+- Spix’s Macaw
+
+====================================================
+CR – CRITICALLY ENDANGERED
+====================================================
+- Javan Rhino
+- Sumatran Rhino
+- Black Rhino
+- Amur Leopard
+- Vaquita
+- Mountain Gorilla
+- Cross River Gorilla
+- Orangutan (Tapanuli)
+- Hawksbill Turtle
+- Yangtze Giant Softshell Turtle
+- Saola
+- Philippine Eagle
+- Kakapo
+- Red Wolf
+- Addax
+- African Forest Elephant
+- Gharial
+- Chinese Pangolin
+- Sunda Pangolin
+- Siamese Crocodile
+- California Condor
+- Iberian Lynx
+- Northern White Rhino
+- Bornean Orangutan (some populations)
+- Blue-throated Macaw
+- Sumatran Tiger
+- Sumatran Elephant
+- Hainan Gibbon
+- Madagascar Fish Eagle
+- Spoon-billed Sandpiper
+- Atlantic Goliath Grouper
+- European Eel
+- Angelshark
+- Sawfish (all species)
+- Helmeted Hornbill
+- Black-footed Ferret
+
+====================================================
+EN – ENDANGERED
+====================================================
+- Tiger
+- Asian Elephant
+- Blue Whale
+- Green Turtle
+- Bonobo
+- Snow Leopard
+- African Wild Dog
+- Chimpanzee
+- Orangutan (Bornean)
+- Orangutan (Sumatran)
+- Red Panda
+- Galápagos Penguin
+- African Penguin
+- Giant Otter
+- Grevy’s Zebra
+- Ethiopian Wolf
+- Dhole
+- Giraffe (some subspecies)
+- Sea Lion (Australian)
+- Whale Shark
+- Humphead Wrasse
+- African Grey Parrot
+- Polar Bear (some regions)
+- Leatherback Turtle
+- Fin Whale
+- Sei Whale
+- Gorilla (Western Lowland)
+- Mandrill
+- Proboscis Monkey
+- Bengal Florican
+- African Lion (some populations)
+- Cheetah (some populations)
+- Bluefin Tuna
+- Scalloped Hammerhead Shark
+- Great Hammerhead Shark
+- Basking Shark
+- Dugong (some regions)
+- Komodo Dragon
+- Loggerhead Turtle
+
+====================================================
+VU – VULNERABLE
+====================================================
+- Polar Bear
+- Lion
+- Cheetah
+- Giant Panda
+- Koala
+- Hippopotamus
+- African Elephant (Savanna)
+- Sea Otter
+- Emperor Penguin
+- Great White Shark
+- Dugong
+- Manatee (West Indian)
+- Snow Goose
+- Red Kangaroo
+- Wombat (Northern Hairy-nosed)
+- Meerkat
+- Hyena (Striped)
+- African Buffalo
+- Wildebeest (Black)
+- Caracal
+- Lynx (Canadian)
+- Wolverine
+- Harpy Eagle
+- Macaw (Scarlet)
+- Puffin (Atlantic)
+- Walrus
+- Orca (some populations)
+- Bottlenose Dolphin (some populations)
+- Hammerhead Shark (Smooth)
+- Manta Ray
+- Sun Bear
+- Sloth Bear
+- Brown Bear (some regions)
+- Moose (some regions)
+- Reindeer (some regions)
+- Nile Crocodile (some regions)
+- Reticulated Python
+- King Cobra
+- Monitor Lizard (various species)
+
+====================================================
+NT – NEAR THREATENED
+====================================================
+- Jaguar
+- Gray Wolf
+- Mountain Zebra
+- Narwhal
+- Humboldt Penguin
+- Giraffe (general species)
+- Brown Bear
+- African Buffalo
+- Hyena (Spotted)
+- Bald Eagle
+- Peregrine Falcon
+- Golden Eagle
+- Caribou (some populations)
+- Red Deer
+- Elk
+- Pronghorn
+- Ocelot
+- Serval
+- Red-tailed Hawk
+- Great Horned Owl
+- Pelican (American White)
+- Flamingo (Greater)
+- Sea Lion (California)
+- Harbor Seal
+- Sea Eagle (White-tailed)
+- Swordfish
+- Mako Shark (Shortfin)
+- Zebra Shark
+- Green Iguana (wild populations)
+- Komodo Dragon (some populations)
+
+====================================================
+LC – LEAST CONCERN
+====================================================
+- Red Fox
+- Raccoon
+- Pigeon (Rock Dove)
+- Squirrel (Eastern Gray)
+- Wild Boar
+- Mallard Duck
+- Bald Eagle (USA population)
+- Peregrine Falcon (global)
+- Coyote
+- Moose
+- Rabbit (European)
+- Common Frog
+- Toad (American)
+- House Sparrow
+- Starling
+- Crow
+- Raven
+- Magpie
+- Blue Jay
+- Robin
+- Blackbird
+- Partridge
+- Quail
+- Turkey (Wild)
+- Chicken (Red Junglefowl)
+- Cow
+- Horse
+- Sheep
+- Goat
+- Donkey
+- Camel
+- Llama
+- Alpaca
+- Dog (various)
+- Cat (various)
+- Dolphin (Common)
+- Humpback Whale
+- Orca (global)
+- Zebra (Plains)
+- Giraffe (Angolan)
+- Gazelle (Thomson’s)
+- Meerkat
+- Prairie Dog
+- Armadillo (Nine-banded)
+- Sloth (Brown-throated)
+- Iguana (Common Green)
+- Gecko (Tokay)
+- Python (Ball)
+- Boa (Common)
+- Tortoise (Leopard)
+- Turtle (Red-eared Slider)
+- Crocodile (American)
+- Alligator (American)
+
+====================================================
+DD – DATA DEFICIENT
+====================================================
+- Many deep-sea sharks
+- Philippine Tube-nosed Bat
+- Several rainforest frogs
+- Many cave fish species
+- Some newly discovered lizards
+- Rare deep-sea octopuses
+- Isolated island rodents
+
+====================================================
+NE – NOT EVALUATED
+====================================================
+- Newly discovered insects
+- Newly discovered deep-sea species
+- Many microorganisms
+- Undescribed amphibians
+- Undescribed reptiles
