@@ -15,7 +15,7 @@ const CONSERVATION_DATA = {
     'koala': { status: 'Endangered', class: 'status-endangered', desc: 'Koalas in certain regions are facing severe habitat destruction and disease.' },
     'penguin': { status: 'Vulnerable', class: 'status-vulnerable', desc: 'Many penguin species are vulnerable to climate change and overfishing affecting their food supply.' },
     'whale': { status: 'Vulnerable', class: 'status-vulnerable', desc: 'Various whale species face threats from ship strikes, entanglement, and ocean noise.' },
-    
+
     // Pets & Least Concern Output (Common Animals)
     'dog': { status: 'Least Concern', class: 'status-least-concern', desc: 'Domestic dogs are widespread and not at risk of extinction.' },
     'cat': { status: 'Least Concern', class: 'status-least-concern', desc: 'Domestic cats have a stable population.' },
@@ -26,7 +26,7 @@ const CONSERVATION_DATA = {
     'sheep': { status: 'Least Concern', class: 'status-least-concern', desc: 'Domesticated sheep have large, stable populations.' },
     'fox': { status: 'Least Concern', class: 'status-least-concern', desc: 'Red foxes are highly adaptable and globally distributed.' },
     'deer': { status: 'Least Concern', class: 'status-least-concern', desc: 'Most deer populations, such as whitetail deer, are stable or increasing.' },
-    
+
     // Fallback System
     'default': { status: 'Unknown Status', class: 'status-unknown', desc: 'We could not pinpoint the exact conservation status for this specific species variation based on the AI scan.' }
 };
@@ -39,6 +39,55 @@ const loadingSpinner = document.getElementById('loading-spinner');
 const resultView = document.getElementById('result-view');
 const btnReset = document.getElementById('reset-btn');
 const rootElement = document.documentElement;
+
+const useCameraBtn = document.getElementById('use-camera-btn');
+const cameraView = document.getElementById('camera-view');
+const cameraVideo = document.getElementById('camera-video');
+const captureBtn = document.getElementById('capture-btn');
+const cancelCameraBtn = document.getElementById('cancel-camera-btn');
+let cameraStream = null;
+
+useCameraBtn.addEventListener('click', async () => {
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        cameraVideo.srcObject = cameraStream;
+        dropArea.setAttribute('hidden', 'true');
+        useCameraBtn.setAttribute('hidden', 'true');
+        cameraView.removeAttribute('hidden');
+    } catch (err) {
+        console.error("Error accessing camera:", err);
+        alert("Camera access denied or unavailable. Make sure you are using a secure connection (HTTPS or localhost).");
+    }
+});
+
+captureBtn.addEventListener('click', () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = cameraVideo.videoWidth;
+    canvas.height = cameraVideo.videoHeight;
+    const ctx = canvas.getContext('2d');
+    
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
+    
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    
+    cameraView.setAttribute('hidden', 'true');
+    processImage(canvas.toDataURL('image/jpeg'));
+});
+
+cancelCameraBtn.addEventListener('click', () => {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    cameraView.setAttribute('hidden', 'true');
+    dropArea.removeAttribute('hidden');
+    useCameraBtn.removeAttribute('hidden');
+});
 
 // Prevent default drag behaviors
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -67,7 +116,7 @@ function preventDefaults(e) {
 // Handle dropped files
 dropArea.addEventListener('drop', handleDrop, false);
 dropArea.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', function() {
+fileInput.addEventListener('change', function () {
     if (this.files && this.files.length) {
         handleFiles(this.files);
     }
@@ -88,32 +137,37 @@ function handleFiles(files) {
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = async function() {
-        imagePreview.src = reader.result;
-        imagePreview.hidden = false;
-        
-        // Update UI State for loading
-        dropArea.setAttribute('hidden', 'true');
-        loadingSpinner.removeAttribute('hidden');
-        
-        // 1. Try Custom Reptile Model (Python Backend) First!
-        const reptileResult = await tryReptileModel(reader.result);
-        
-        if (reptileResult && reptileResult.success) {
-            // It successfully predicted from our custom Keras model
-            console.log("Reptile Model Prediction:", reptileResult);
-            // Construct a fake predictions block to reuse our display logic
-            // We append ", reptile" so our status lookup might catch it
-            const customPredictions = [{
-                className: reptileResult.prediction + ", reptile",
-                probability: reptileResult.confidence
-            }];
-            displayResults(customPredictions);
-        } else {
-            console.warn("Reptile model unavailable or failed. Falling back to tfjs MobileNet.");
-            // 2. Fallback to standard MobileNet
-            startAnalysis();
-        }
+    reader.onloadend = function () {
+        processImage(reader.result);
+    }
+}
+
+async function processImage(dataUrl) {
+    imagePreview.src = dataUrl;
+    imagePreview.hidden = false;
+
+    // Update UI State for loading
+    dropArea.setAttribute('hidden', 'true');
+    if (useCameraBtn) useCameraBtn.setAttribute('hidden', 'true');
+    loadingSpinner.removeAttribute('hidden');
+
+    // 1. Try Custom Reptile Model (Python Backend) First!
+    const reptileResult = await tryReptileModel(dataUrl);
+
+    if (reptileResult && reptileResult.success) {
+        // It successfully predicted from our custom Keras model
+        console.log("Reptile Model Prediction:", reptileResult);
+        // Construct a fake predictions block to reuse our display logic
+        // We append ", reptile" so our status lookup might catch it
+        const customPredictions = [{
+            className: reptileResult.prediction + ", reptile",
+            probability: reptileResult.confidence
+        }];
+        displayResults(customPredictions);
+    } else {
+        console.warn("Reptile model unavailable or failed. Falling back to tfjs MobileNet.");
+        // 2. Fallback to standard MobileNet
+        startAnalysis();
     }
 }
 
@@ -127,11 +181,11 @@ async function tryReptileModel(base64Image) {
             },
             body: JSON.stringify({ image: base64Image })
         });
-        
+
         if (!response.ok) {
             return null; // Model not loaded or server error
         }
-        
+
         return await response.json();
     } catch (e) {
         // Server is likely offline
@@ -157,11 +211,11 @@ async function loadModel() {
 loadModel();
 
 async function startAnalysis() {
-    if(!model) {
+    if (!model) {
         alert("Please wait, the AI models are still loading in the background.");
         return;
     }
-    
+
     // Ensure the image preview is fully loaded and drawn before passing to tfjs
     setTimeout(async () => {
         try {
@@ -179,14 +233,14 @@ async function matchConservationStatus(speciesName) {
     // Attempt to extract the base animal name
     // MobileNet often returns strings like "African elephant, Loxodonta africana"
     let queryName = speciesName.split(',')[0].trim();
-    
+
     // Fallback default
     let result = {
         status: 'Status Unavailable',
         class: 'status-unknown',
         desc: `We could not automatically retrieve the specific conservation status for the ${queryName} from our biological databases.`
     };
-    
+
     // 1. Check our robust local database provided by the user first!
     const localData = findLocalStatus(queryName);
     if (localData) {
@@ -197,27 +251,27 @@ async function matchConservationStatus(speciesName) {
     try {
         // Query Wikipedia API for the page summary and infobox data
         const endpoint = `https://en.wikipedia.org/w/api.php?action=query&prop=revisions|extracts&rvprop=content&rvsection=0&exintro=1&explaintext=1&titles=${encodeURIComponent(queryName)}&format=json&origin=*`;
-        
+
         const response = await fetch(endpoint);
         const data = await response.json();
         const pages = data.query.pages;
         const pageId = Object.keys(pages)[0];
-        
+
         if (pageId !== "-1") {
             const page = pages[pageId];
             const content = page.revisions ? page.revisions[0]['*'] : '';
             const summary = page.extract || '';
 
             // Update description with actual Wikipedia summary
-            if(summary) {
+            if (summary) {
                 // Get the first sentence or two
                 result.desc = summary.split('. ').slice(0, 2).join('. ') + '.';
             }
-            
+
             // Try to parse conservation status from the infobox ONLY if we didn't find a high-accuracy match locally
             if (!localData) {
                 const statusMatch = content.match(/status\s*=\s*([A-Za-z]+)/i);
-                
+
                 // Map common IUCN status codes to full text and CSS classes
                 const statusMap = {
                     'EX': { text: 'Extinct', class: 'status-endangered' },
@@ -242,19 +296,19 @@ async function matchConservationStatus(speciesName) {
                         result.status = statusMap[code].text;
                         result.class = statusMap[code].class;
                     } else if (statusMap[statusMatch[1].toLowerCase()]) {
-                         result.status = statusMap[statusMatch[1].toLowerCase()].text;
-                         result.class = statusMap[statusMatch[1].toLowerCase()].class;
+                        result.status = statusMap[statusMatch[1].toLowerCase()].text;
+                        result.class = statusMap[statusMatch[1].toLowerCase()].class;
                     } else {
                         result.status = statusMatch[1].charAt(0).toUpperCase() + statusMatch[1].slice(1);
                         result.class = 'status-vulnerable';
                     }
                 } else {
-                     // Fallback to keyword search in summary
-                     const lowerSummary = summary.toLowerCase();
-                     if(lowerSummary.includes('endangered')) { result.status = 'Endangered'; result.class = 'status-endangered'; }
-                     else if(lowerSummary.includes('vulnerable')) { result.status = 'Vulnerable'; result.class = 'status-vulnerable'; }
-                     else if(lowerSummary.includes('least concern')) { result.status = 'Least Concern'; result.class = 'status-least-concern'; }
-                     else if(lowerSummary.includes('domesticated') || lowerSummary.includes('pet')) { result.status = 'Domesticated / LC'; result.class = 'status-least-concern'; }
+                    // Fallback to keyword search in summary
+                    const lowerSummary = summary.toLowerCase();
+                    if (lowerSummary.includes('endangered')) { result.status = 'Endangered'; result.class = 'status-endangered'; }
+                    else if (lowerSummary.includes('vulnerable')) { result.status = 'Vulnerable'; result.class = 'status-vulnerable'; }
+                    else if (lowerSummary.includes('least concern')) { result.status = 'Least Concern'; result.class = 'status-least-concern'; }
+                    else if (lowerSummary.includes('domesticated') || lowerSummary.includes('pet')) { result.status = 'Domesticated / LC'; result.class = 'status-least-concern'; }
                 }
             }
         }
@@ -267,17 +321,17 @@ async function matchConservationStatus(speciesName) {
 
 async function displayResults(predictions) {
     console.log("Predictions:", predictions);
-    
+
     // We take the top prediction
     const topResult = predictions[0];
     const speciesNameRaw = topResult.className.split(',')[0]; // Simplify name output
     const probability = topResult.probability;
     const confidencePercent = Math.round(probability * 100);
-    
+
     // Update DOM texts
     document.getElementById('species-name').textContent = speciesNameRaw;
     document.getElementById('confidence-text').textContent = confidencePercent + "%";
-    
+
     // Trigger progress bar animation
     setTimeout(() => {
         document.getElementById('confidence-fill').style.width = confidencePercent + "%";
@@ -285,15 +339,15 @@ async function displayResults(predictions) {
 
     // Get conservation status (Now asynchronous)
     const conservationInfo = await matchConservationStatus(speciesNameRaw);
-    
+
     // Hide spinner, show results NOW that API call is done
     loadingSpinner.setAttribute('hidden', 'true');
     resultView.removeAttribute('hidden');
-    
+
     // Update Status card UI
     document.getElementById('status-badge').textContent = conservationInfo.status;
     document.getElementById('status-desc').textContent = conservationInfo.desc;
-    
+
     // Apply theme container styling
     rootElement.className = ''; // remove existing
     rootElement.classList.add(conservationInfo.class);
@@ -307,14 +361,20 @@ function resetApp() {
     fileInput.value = "";
     imagePreview.src = "";
     imagePreview.hidden = true;
-    
+
     resultView.setAttribute('hidden', 'true');
     dropArea.removeAttribute('hidden');
-    
+    if (useCameraBtn) useCameraBtn.removeAttribute('hidden');
+
     // Reset bar
     document.getElementById('confidence-fill').style.width = "0%";
-    
+
     // Reset style classes
     rootElement.className = '';
     document.getElementById('result-view').className = 'result-view';
+
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
 }
