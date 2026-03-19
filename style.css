@@ -139,6 +139,7 @@ body {
     padding: 2.5rem;
     box-shadow: var(--glass-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
 }
 
 .drop-area {
